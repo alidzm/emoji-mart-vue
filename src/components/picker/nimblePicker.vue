@@ -12,20 +12,6 @@
     />
   </div>
 
-  <search
-    v-if="showSearch"
-    ref="search"
-    :data="mutableData"
-    :i18n="mutableI18n"
-    :emojis-to-show-filter="emojisToShowFilter"
-    :include="include"
-    :exclude="exclude"
-    :custom="customEmojis"
-    :recent="recentEmojis"
-    :auto-focus="autoFocus"
-    @search="onSearch"
-  />
-
   <div class="emoji-mart-scroll" ref="scroll" @scroll="onScroll">
     <category
       v-show="searchEmojis"
@@ -47,19 +33,6 @@
       :name="category.name"
       :emojis="category.emojis"
       :emoji-props="emojiProps"
-    />
-  </div>
-
-  <div class="emoji-mart-bar" v-if="showPreview">
-    <preview
-      :data="mutableData"
-      :title="title"
-      :emoji="previewEmoji"
-      :idle-emoji="emoji"
-      :show-skin-tones="showSkinTones"
-      :emoji-props="emojiProps"
-      :skin-props="skinProps"
-      @change="onSkinChange"
     />
   </div>
 </div>
@@ -179,6 +152,7 @@ export default {
       return (this.perLine * (this.emojiSize + 12)) + 12 + 2 + measureScrollbar()
     },
     filteredCategories() {
+      console.log(this.categories);
       return this.categories.filter((category) => {
         let isIncluded = this.include && this.include.length ? this.include.indexOf(category.id) > -1 : true
         let isExcluded = this.exclude && this.exclude.length ? this.exclude.indexOf(category.id) > -1 : false
@@ -208,7 +182,6 @@ export default {
     RECENT_CATEGORY.emojis = this.recentEmojis
     CUSTOM_CATEGORY.emojis = this.customEmojis
 
-    this.categories.push(RECENT_CATEGORY)
     this.categories.push(...categories)
     this.categories.push(CUSTOM_CATEGORY)
 
